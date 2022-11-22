@@ -28,6 +28,7 @@ public class CreateControlles {
     private ObservableList<Flowers> LengthData = FXCollections.observableArrayList();
     private int SUMA = 0;
 
+    private int acs  = 0;
     @FXML
     private ResourceBundle resources;
 
@@ -172,6 +173,7 @@ public class CreateControlles {
         for(int i = 0; i < bouquestData.size(); i++){
             SUMA = SUMA + bouquestData.get(i).getCost();
         }
+        SUMA += acs;
         COST.setText("Ціна букета: " + SUMA + " $");
     }
 
@@ -200,22 +202,27 @@ public class CreateControlles {
         for(int i = 0; i < bouquestData.size(); i++){
             SUMA = SUMA + bouquestData.get(i).getCost();
         }
+        SUMA += acs;
         COST.setText("Ціна букета: " + SUMA + " $");
     }
 
     @FXML
     void AccessoriesUP() {
+        acs = 0;
         SUMA = 0;
         for(int i = 0; i < bouquestData.size(); i++){
             SUMA = SUMA + bouquestData.get(i).getCost();
         }
         if(RadioTape.isSelected()){
+            acs+= 25;
             SUMA+= 25;
         }
         if(RadioKraft_Paper.isSelected()){
+            acs+= 40;
             SUMA+= 40;
         }
         if(RadioBasket.isSelected()){
+            acs+= 60;
             SUMA+= 60;
         }
         COST.setText("Ціна букета: " + SUMA + " $");

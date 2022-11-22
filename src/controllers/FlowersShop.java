@@ -1,8 +1,6 @@
 package controllers;
 
-import Command.CreateCommand;
-import Command.DeleteCommand;
-import Command.UpdateCommand;
+import Command.*;
 import Database.Const;
 import Database.DatabaseHandler;
 import Flowers.Flowers;
@@ -25,7 +23,7 @@ import javafx.stage.Stage;
 public class FlowersShop {
     private ObservableList<Flowers> flowersData = FXCollections.observableArrayList();
     private Comp c = new Comp();
-    private User user = new User(new UpdateCommand(c), new DeleteCommand(c) , new CreateCommand(c));
+    private User user = new User(new UpdateCommand(c), new DeleteCommand(c) , new CreateCommand(c), new RefreshCommand(c));
     private static ActionEvent actionEvent;
 
     public static ActionEvent getActionEvent() {
@@ -35,7 +33,6 @@ public class FlowersShop {
     public void setActionEvent(ActionEvent actionEvent) {
         FlowersShop.actionEvent = actionEvent;
     }
-
 
     @FXML
     private VBox EXIT;
@@ -62,7 +59,10 @@ public class FlowersShop {
     @FXML
     public void initialize(){
         flowersData.clear();
-        initData();
+        DatabaseHandler.SelectFlowers();
+        for (int i = 0; i<DatabaseHandler.getNum();i++) {
+            flowersData.add(DatabaseHandler.temp(i));
+        }
         MemberColumn.setCellValueFactory(new PropertyValueFactory<Flowers, Integer>(Const.ID_FLOWERS));
         NameColumn.setCellValueFactory(new PropertyValueFactory<Flowers, String>(Const.NAME_FLOWERS));
         CostColumn.setCellValueFactory(new PropertyValueFactory<Flowers, Integer>(Const.COST_FLOWERS));
@@ -72,16 +72,13 @@ public class FlowersShop {
         Number.setText("Кількість квітів: " + flowersData.size());
     }
 
-    public void initData(){
-        DatabaseHandler.SelectFlowers();
+
+    public void refresh() {
+        flowersData.clear();
+        user.refreshBouquest();
         for (int i = 0; i<DatabaseHandler.getNum();i++) {
             flowersData.add(DatabaseHandler.temp(i));
         }
-    }
-
-    public void refresh(ActionEvent actionEvent) {
-        flowersData.clear();
-        initData();
         MemberColumn.setCellValueFactory(new PropertyValueFactory<Flowers, Integer>(Const.ID_FLOWERS));
         NameColumn.setCellValueFactory(new PropertyValueFactory<Flowers, String>(Const.NAME_FLOWERS));
         CostColumn.setCellValueFactory(new PropertyValueFactory<Flowers, Integer>(Const.COST_FLOWERS));

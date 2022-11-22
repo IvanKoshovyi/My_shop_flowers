@@ -1,6 +1,7 @@
 package Object;
 
 
+import Database.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import controllers.FlowersShop;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -62,4 +62,8 @@ public class Comp {
             e.printStackTrace();
         }
     }
+    public void refresh(){
+        DatabaseHandler.SelectFlowers();
+    }
+
 }
